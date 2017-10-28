@@ -1,4 +1,4 @@
-const YTS_API = "http://localhost:3000/"
+const YTS_API = "https://yts-api.herokuapp.com/"
 
 let app = new Vue({
     el: '#vue-app',
