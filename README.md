@@ -1,2 +1,2 @@
 # yts
-Simple torrent site that scrapes yts.ag 
+A simple site that scrapes yts.ag and displays movies in a nice bootstrap table
