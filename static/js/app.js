@@ -1,15 +1,26 @@
-const YTS_API = "https://yts-api.herokuapp.com/"
+const YTS_API = "https://yts.ag/api/v2/"
 
 let app = new Vue({
     el: '#vue-app',
     data: {
         movies: [],
-        pageId : ''
+        queryTerm : '',
+        memory : {
+            queryTerm: ''
+        }
     },
     methods: {
-        getMovies: (id) => {
-            axios.get(YTS_API + id)
-                .then(resp => app.movies = resp.data)
+        getMovies: function(page = 1, q = '') {
+            console.log('Getting movies...')
+            let url = YTS_API + `list_movies.jsonp?page=${page}&query_term=${q}&limit=50`;
+
+            this.memory.queryTerm = q.length > 0 ? q : '';
+            this.movies = [];
+            
+            axios.get(url)
+                .then((resp) => {
+                    app.movies = resp.data.data.movies
+                })
                 .catch(err => console.log(err))
         }
     },

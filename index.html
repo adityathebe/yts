@@ -9,41 +9,65 @@
 <body>
     <div class="container">
         <div id="vue-app">
-            <h2>Movies</h2>
-            <input type="text" v-model="pageId">
-            <input type="button" class="btn btn-success" v-on:click="getMovies(pageId)" value="Fetch Movies">
+            <h2 v-on:click="getMovies()">YTS Torrents</h2>
 
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <td><h3>SN</h3></td>
-                        <td><h3>Title</h3></td>
-                        <td><h3>Released on</h3></td>
-                        <td><h3>Rating</h3></td>
-                        <td><h3>Image</h3></td>
-                        <td><h3>Download</h3></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="movie in movies">
-                        <td><h4> {{ movies.indexOf(movie) + 1 }} </h4></td>
-                        <td><h4>{{ movie.title }}</h4></td>
-                        <td>{{ movie.year }}</td>
-                        <td>{{ movie.rating }}</td>
-                        <td><img height="100px" v-bind:src="movie.imgSrc"></td>
-                        <td>
-                            <a v-for="l in movie.link" v-bind:href="l.link">
-                                <input type="button" class="btn btn-success" v-bind:value="l.quality">
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- Filters -->
+            <div class="filters">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <input type="text" placeholder="Search movie.." class="form-control" v-model="queryTerm">
+                        <input type="button" class="btn btn-success" v-on:click="getMovies(1, queryTerm)" value="Search Movies">
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Main content -->
+            <div v-if="movies">
+                <div v-if="movies.length > 0">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td><h3>SN</h3></td>
+                                <td><h3>Title</h3></td>
+                                <td><h3>Released on</h3></td>
+                                <td><h3>Rating</h3></td>
+                                <td><h3>Genre</h3></td>
+                                <td><h3>Image</h3></td>
+                                <td><h3>Download</h3></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="movie in movies">
+                                <td><h4> {{ movies.indexOf(movie) + 1 }} </h4></td>
+                                <td><h4>{{ movie.title_english }}</h4></td>
+                                <td>{{ movie.year }}</td>
+                                <td>{{ movie.rating }}</td>
+                                <td>
+                                    <p v-for="g in movie.genres">{{ g }} </p>
+                                </td>
+                                <td><img height="100px" v-bind:src="movie.medium_cover_image"></td>
+                                <td>
+                                    <a v-for="l in movie.torrents" v-bind:href="l.url">
+                                        <input type="button" class="btn btn-success" v-bind:value="l.quality">
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div v-else>
+                    <h2> Searching ... </h2>
+                </div>
+            </div>
+            <div v-else>
+                <h2> {{ memory.queryTerm }} - Not Found </h2>
+            </div>
         </div>
     </div>
 
-
-    <script src="static/js/vue.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="static/js/app.js"></script>
 </body>
