@@ -12,7 +12,7 @@ let app = new Vue({
     methods: {
         getMovies: function(page = 1, q = '') {
             console.log('Getting movies...')
-            let url = YTS_API + `list_movies.jsonp?page=${page}&query_term=${q}&limit=50`;
+            let url = YTS_API + `list_movies.jsonp?page=${page}&query_term=${q}&limit=50&minimum_rating=7`;
 
             this.memory.queryTerm = q.length > 0 ? q : '';
             this.movies = [];
